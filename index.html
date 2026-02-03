@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Will you be my Valentine 💖??</title>
+  <title>BB Will you be my Valentine 💖??</title>
 
   <style>
     body {
@@ -12,7 +12,7 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      font-family: Arial, sans-serif;
+      font-family: "Comic Sans MS", cursive, sans-serif;
       overflow: hidden;
     }
 
@@ -21,25 +21,36 @@
       padding: 40px 60px;
       border-radius: 20px;
       text-align: center;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-      z-index: 10;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.25);
       position: relative;
+      z-index: 10;
+      width: 360px;
+    }
+
+    .avatar {
+      font-size: 48px;
+      margin-bottom: 10px;
     }
 
     h1 {
       color: #ff1493;
       margin-bottom: 30px;
+      font-size: 24px;
+    }
+
+    .buttons {
+      position: relative;
+      height: 80px;
     }
 
     button {
       font-size: 18px;
-      padding: 12px 30px;
-      margin: 10px;
+      padding: 12px 28px;
       border: none;
       border-radius: 30px;
       cursor: pointer;
-      transition: transform 0.2s;
-      position: relative;
+      position: absolute;
+      transition: transform 0.15s;
     }
 
     button:hover {
@@ -49,36 +60,36 @@
     .yes {
       background-color: #ff69b4;
       color: white;
+      left: 40px;
     }
 
     .no {
-      background-color: #ddd;
+      background-color: #eee;
       color: #555;
-      position: absolute;
+      right: 40px;
     }
 
-    /* Celebration popup */
-    .popup {
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%) scale(0);
+    /* Celebration Screen */
+    .celebrate {
+      display: none;
+      flex-direction: column;
+      align-items: center;
       background: white;
-      padding: 30px 50px;
+      padding: 40px;
       border-radius: 20px;
-      text-align: center;
-      box-shadow: 0 15px 40px rgba(0,0,0,0.3);
-      z-index: 20;
-      transition: transform 0.4s ease;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.25);
+      z-index: 10;
     }
 
-    .popup.show {
-      transform: translate(-50%, -50%) scale(1);
-    }
-
-    .popup h2 {
+    .celebrate h2 {
       color: #ff1493;
-      font-size: 28px;
+      font-size: 32px;
+      margin-bottom: 20px;
+    }
+
+    .celebrate img {
+      width: 260px;
+      border-radius: 12px;
     }
 
     /* Confetti */
@@ -87,8 +98,8 @@
       width: 10px;
       height: 10px;
       top: -10px;
-      animation: fall 3s linear forwards;
-      z-index: 15;
+      animation: fall linear forwards;
+      z-index: 20;
     }
 
     @keyframes fall {
@@ -96,82 +107,64 @@
         transform: translateY(110vh) rotate(720deg);
       }
     }
-
-    /* Floating hearts */
-    .heart {
-      position: fixed;
-      bottom: -20px;
-      font-size: 20px;
-      animation: floatUp 6s linear forwards;
-      opacity: 0.7;
-    }
-
-    @keyframes floatUp {
-      to {
-        transform: translateY(-120vh);
-        opacity: 0;
-      }
-    }
   </style>
 </head>
 
 <body>
 
-  <div class="card">
-    <h1>Will you be my Valentine? 💘</h1>
-    <button class="yes" onclick="yesClicked()">Yes 💖</button>
-    <button class="no" id="noBtn">No 😜</button>
+  <!-- QUESTION CARD -->
+  <div class="card" id="questionCard">
+    <div class="avatar">🐣💗</div>
+    <h1>BB will you be my valentine?</h1>
+
+    <div class="buttons">
+      <button class="yes" onclick="yesClicked()">Yes</button>
+      <button class="no" id="noBtn">No</button>
+    </div>
   </div>
 
-  <div class="popup" id="popup">
-    <h2>Yayyy! 🎉💖<br>You're my Valentine!</h2>
+  <!-- CELEBRATION CARD -->
+  <div class="celebrate" id="celebrateCard">
+    <h2>YAY! 🎉</h2>
+    <img src="https://media.giphy.com/media/26BRv0ThflsHCqDrG/giphy.gif" alt="celebrate">
   </div>
 
-  <script>
-    const noBtn = document.getElementById("noBtn");
+<script>
+  const noBtn = document.getElementById("noBtn");
+  const questionCard = document.getElementById("questionCard");
+  const celebrateCard = document.getElementById("celebrateCard");
 
-    noBtn.addEventListener("mouseover", () => {
-      const x = Math.random() * (window.innerWidth - 100);
-      const y = Math.random() * (window.innerHeight - 100);
-      noBtn.style.left = x + "px";
-      noBtn.style.top = y + "px";
-    });
+  function moveNoButton() {
+    const x = Math.random() * (window.innerWidth - 120);
+    const y = Math.random() * (window.innerHeight - 120);
+    noBtn.style.left = x + "px";
+    noBtn.style.top = y + "px";
+  }
 
-    function yesClicked() {
-      showPopup();
-      launchConfetti();
+  noBtn.addEventListener("mouseover", moveNoButton);
+  noBtn.addEventListener("touchstart", moveNoButton);
+
+  function yesClicked() {
+    questionCard.style.display = "none";
+    celebrateCard.style.display = "flex";
+    launchConfetti();
+  }
+
+  function launchConfetti() {
+    for (let i = 0; i < 160; i++) {
+      const confetti = document.createElement("div");
+      confetti.className = "confetti";
+      document.body.appendChild(confetti);
+
+      confetti.style.left = Math.random() * window.innerWidth + "px";
+      confetti.style.backgroundColor =
+        ["#ff69b4", "#ff1493", "#ffc0cb", "#ffd700"][Math.floor(Math.random() * 4)];
+      confetti.style.animationDuration = Math.random() * 3 + 2 + "s";
+
+      setTimeout(() => confetti.remove(), 5000);
     }
-
-    function showPopup() {
-      document.getElementById("popup").classList.add("show");
-    }
-
-    function launchConfetti() {
-      for (let i = 0; i < 120; i++) {
-        const confetti = document.createElement("div");
-        confetti.classList.add("confetti");
-        document.body.appendChild(confetti);
-
-        confetti.style.left = Math.random() * window.innerWidth + "px";
-        confetti.style.backgroundColor =
-          ["#ff69b4", "#ff1493", "#ffc0cb", "#fff"][Math.floor(Math.random() * 4)];
-        confetti.style.animationDuration = (Math.random() * 2 + 2) + "s";
-
-        setTimeout(() => confetti.remove(), 3000);
-      }
-    }
-
-    // Floating hearts
-    setInterval(() => {
-      const heart = document.createElement("div");
-      heart.classList.add("heart");
-      heart.innerText = "💖";
-      heart.style.left = Math.random() * window.innerWidth + "px";
-      document.body.appendChild(heart);
-
-      setTimeout(() => heart.remove(), 6000);
-    }, 600);
-  </script>
+  }
+</script>
 
 </body>
 </html>
